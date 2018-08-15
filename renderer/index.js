@@ -11,6 +11,7 @@ const patch         = require('./tasks/patch');
 const render        = require('./tasks/render');
 const verify        = require('./tasks/verify');
 const actions       = require('./tasks/actions');
+const ffmpeg        = require('./tasks/ffmpeg');
 const cleanup       = require('./tasks/cleanup');
 
 const Project       = require('../api/models/project');
@@ -20,9 +21,9 @@ const API_REQUEST_INTERVAL = process.env.API_REQUEST_INTERVAL || 15 * 60 * 1000;
 /**
  * Apply tasks one by one
  * Each task is applied only once, after previous is finished
- * @param  {Project} project 
+ * @param  {Project} project
  * @param  {Function} resolve
- * @param  {Function} reject 
+ * @param  {Function} reject
  */
 function applyTasks(project, resolve, reject) {
 
@@ -38,6 +39,7 @@ function applyTasks(project, resolve, reject) {
         .then(render)
         .then(verify)
         .then(actions)
+        .then(ffmpeg)
         .then(cleanup)
         .then((project) => {
 
@@ -159,7 +161,7 @@ module.exports = {
 
     /**
      * Local project model renderer method wrapper
-     * 
+     *
      * @param  {string} binary  path to Adobe After Effects aerender binary
      * @param  {Array} opts    optional options array
      * @param  {Project} project project model
