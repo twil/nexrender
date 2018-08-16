@@ -26,6 +26,7 @@ module.exports = function(project) {
         let params = [];
         params.push('-y');
         params.push('-i', source);
+        params.push('-pix_fmt:v', 'yuv420p');
         params.push('-r', '30');
         params.push(destination)
 
