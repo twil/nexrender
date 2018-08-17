@@ -19,7 +19,8 @@ module.exports = function(project) {
 
         console.info(`[${project.uid}] postprocess with ffmpeg...`);
 
-        let source = path.join( RESULTS_DIR, project.uid + '_' + project.resultname );
+        //let source = path.join( RESULTS_DIR, project.uid + '_' + project.resultname );
+        let source = path.join( project.workpath, project.resultname );
         let destination = path.join( RESULTS_DIR, project.uid + '_result.mp4' );
 
         // setup parameters
