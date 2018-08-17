@@ -39,7 +39,7 @@ function applyTasks(project, resolve, reject) {
         .then(render)
         .then(verify)
         .then(ffmpeg)
-        .then(actions)
+        //.then(actions)
         .then(cleanup)
         .then((project) => {
 
