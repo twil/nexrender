@@ -24,7 +24,7 @@ module.exports = function(project) {
         let url = project.settings.resultCallback;
 
         if (!token || !url) {
-            logger.error(`[${project.uid}] project.settings.token or project.settings.resultCallback is not set. skipping...`);
+            logger.info(`[${project.uid}] project.settings.token or project.settings.resultCallback is not set. skipping...`);
             return resolve(project);
         }
 
@@ -36,14 +36,16 @@ module.exports = function(project) {
                 form.append('result', fs.createReadStream(resultPath));
                 form.submit(url, function(err, res) {
                     if (err) {
-                        logger.error(`[${project.uid}] upload failed. skipping...`);
-                    };
-                    logger.info(`[${project.uid}] uploaded.`);
+                        logger.info(`[${project.uid}] upload failed. skipping...`);
+                    }
+                    else {
+                        logger.info(`[${project.uid}] uploaded.`);
+                    }
                     return resolve(project);
                 });
             })
             .catch((err) => {
-                logger.error(`[${project.uid}] result is not found!? skipping...`);
+                logger.info(`[${project.uid}] result is not found!? skipping...`);
                 return resolve(project);
             });
     });
