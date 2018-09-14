@@ -24,6 +24,7 @@
     "body-parser": "^1.15.0",
     "cli": "^1.0.0",
     "download": "^6.1.0",
+    "winston": "^2.4.4",
     "express": "^4.13.4",
     "fs-extra": "^0.30.0",
     "jimp": "^0.2.21",

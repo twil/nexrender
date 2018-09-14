@@ -1,6 +1,5 @@
 'use strict';
 
-// we have winston@2.4.4 in jshint as a dependency
 var winston = require('winston');
 
 
