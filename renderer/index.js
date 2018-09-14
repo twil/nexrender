@@ -14,6 +14,7 @@ const render        = require('./tasks/render');
 const verify        = require('./tasks/verify');
 const actions       = require('./tasks/actions');
 const ffmpeg        = require('./tasks/ffmpeg');
+const uploadResult  = require('./tasks/upload_result');
 const cleanup       = require('./tasks/cleanup');
 
 const Project       = require('../api/models/project');
@@ -41,6 +42,7 @@ function applyTasks(project, resolve, reject) {
         .then(render)
         .then(verify)
         .then(ffmpeg)
+        .then(uploadResult)
         //.then(actions)
         .then(cleanup)
         .then((project) => {
