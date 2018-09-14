@@ -1,5 +1,7 @@
 'use strict';
 
+let logger        = require('../logger');
+
 const mkdirp      = require('mkdirp');
 const path        = require('path');
 const fs          = require('fs-extra');
@@ -13,7 +15,7 @@ const TEMP_DIRECTORY        = process.env.TEMP_DIRECTORY        || 'temp';
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] setting up project...`);
+        logger.info(`[${project.uid}] setting up project...`);
 
         // setup project's workpath
         project.workpath   = path.join(TEMP_DIRECTORY,      project.uid);

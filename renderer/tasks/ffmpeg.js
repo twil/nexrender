@@ -1,5 +1,7 @@
 'use strict';
 
+let logger          = require('../logger');
+
 const child_process = require('child_process');
 const fs            = require('fs-extra');
 const path          = require('path');
@@ -17,7 +19,7 @@ let spawn = child_process.spawn;
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] postprocess with ffmpeg...`);
+        logger.info(`[${project.uid}] postprocess with ffmpeg...`);
 
         //let source = path.join( RESULTS_DIR, project.uid + '_' + project.resultname );
         let source = path.join( project.workpath, project.resultname );
@@ -57,7 +59,7 @@ module.exports = function(project) {
             }
 
             fs.remove( source, (err) => {
-                console.info(`[${project.uid}] cleaning up original...`);
+                logger.info(`[${project.uid}] cleaning up original...`);
                 return (err) ? reject(err) : resolve(project);
             })
         });

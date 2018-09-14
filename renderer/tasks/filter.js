@@ -1,5 +1,7 @@
 'use strict';
 
+let logger  = require('../logger');
+
 const jimp  = require('jimp');
 const async = require('async');
 const path  = require('path');
@@ -7,7 +9,7 @@ const path  = require('path');
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] filtering image assets...`);
+        logger.info(`[${project.uid}] filtering image assets...`);
 
         // initialize empty call-queue array
         let calls = [];

@@ -1,8 +1,10 @@
 'use strict';
 
+let logger      = require('../logger');
+
 const fs        = require('fs-extra');
 const path      = require('path');
-const url      = require('url');
+const url       = require('url');
 const async     = require('async');
 
 /**
@@ -12,7 +14,7 @@ const async     = require('async');
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] renaming assets...`);
+        logger.info(`[${project.uid}] renaming assets...`);
 
         // initialize empty call-queue array
         let calls = [];

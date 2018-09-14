@@ -1,5 +1,7 @@
 'use strict';
 
+let logger          = require('../logger');
+
 const child_process = require('child_process');
 const path          = require('path');
 
@@ -12,7 +14,7 @@ let spawn = child_process.spawn;
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] rendering project...`);
+        logger.info(`[${project.uid}] rendering project...`);
 
         // create container for data and parameters
         let aedata = [];
@@ -25,10 +27,10 @@ module.exports = function(project) {
 
         // NOTE: for still (jpg) image sequence frame filename will be changed to result_[#####].jpg
         // NOTE: if you want to change this field, also goto actions/copy-to-results.js, and apply changes there too
-        if (project.settings && 
-            project.settings.outputExt && 
-            ['jpeg', 'jpg'].indexOf( 
-                project.settings.outputExt.toLowerCase() 
+        if (project.settings &&
+            project.settings.outputExt &&
+            ['jpeg', 'jpg'].indexOf(
+                project.settings.outputExt.toLowerCase()
             ) !== -1
         ) {
             project.resultname = 'result_[#####]' + '.' + outext;
@@ -41,7 +43,7 @@ module.exports = function(project) {
 
         // advanced parameters
         if (project.settings) {
-            
+
             if (project.settings.outputModule) {
                 params.push('-OMtemplate', project.settings.outputModule);
             }
@@ -100,7 +102,7 @@ module.exports = function(project) {
         });
 
         // on error (logs)
-        ae.stderr.on('data', (data) => {  
+        ae.stderr.on('data', (data) => {
             aedata.push(data.toString());
         });
 

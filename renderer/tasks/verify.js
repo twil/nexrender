@@ -1,5 +1,7 @@
 'use strict';
 
+let logger  = require('../logger');
+
 const path  = require('path');
 const fs    = require('fs-extra');
 const dir   = require('node-dir');
@@ -7,7 +9,7 @@ const dir   = require('node-dir');
 /**
  * Function tries to read logs from folder with project
  * @param  {Project}   project
- * @param  {Function} callback 
+ * @param  {Function} callback
  */
 function getLogs(project, callback) {
     let logsdir = path.join( project.workpath, project.template + ' Logs' );
@@ -28,23 +30,23 @@ function getLogs(project, callback) {
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] verifying project...`);
+        logger.info(`[${project.uid}] verifying project...`);
 
         //TEMP: workaround for JPEG sequences mode
-        if (project.settings && 
-            project.settings.outputExt && 
-            ['jpeg', 'jpg'].indexOf( 
-                project.settings.outputExt.toLowerCase() 
+        if (project.settings &&
+            project.settings.outputExt &&
+            ['jpeg', 'jpg'].indexOf(
+                project.settings.outputExt.toLowerCase()
             ) !== -1
         ) {
-            console.info(`[${project.uid}] verifying: found jpeg sequence...`);
+            logger.info(`[${project.uid}] verifying: found jpeg sequence...`);
             return resolve(project);
         }
 
         // read stats for file
-        fs.stat( path.join( 
-            project.workpath, 
-            project.resultname 
+        fs.stat( path.join(
+            project.workpath,
+            project.resultname
         ), (err, stats) => {
             if (err) {
                 // if file doesn't exists
@@ -55,7 +57,7 @@ module.exports = function(project) {
                     return reject(logs);
                 })
             } else {
-                return resolve(project); 
+                return resolve(project);
             }
         })
     });

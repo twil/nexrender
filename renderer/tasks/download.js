@@ -1,5 +1,7 @@
 'use strict';
 
+let logger     = require('../logger');
+
 const download = require('download');
 const fs       = require('fs-extra');
 const path     = require('path');
@@ -40,7 +42,7 @@ function downloadFromS3(bucket, key, dstDir, dstName) {
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] downloading assets...`);
+        logger.info(`[${project.uid}] downloading assets...`);
 
         // iterate over each asset to check for custom template
         for (let asset of project.assets) {

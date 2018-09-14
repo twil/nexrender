@@ -1,5 +1,7 @@
 'use strict';
 
+let logger      = require('../logger');
+
 const path      = require('path');
 const fs        = require('fs-extra');
 const async     = require('async');
@@ -75,7 +77,7 @@ function processTemplateFile(project, callback) {
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] patching project...`);
+        logger.info(`[${project.uid}] patching project...`);
 
         // Iterate over assets,
         // skip those that are not data/script files,
