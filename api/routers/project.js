@@ -19,7 +19,7 @@ module.exports = {
         if(token){
             API_TOKEN = token;
             API_HEADERS = {
-                'X-Authorization': 'token ' + token;
+                'X-Authorization': 'token ' + token
             };
         }
         return true;
