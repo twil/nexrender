@@ -3,6 +3,8 @@
 const request = require('request');
 
 let API_URL = 'http://localhost:3000/api/';
+let API_TOKEN = '';
+let API_HEADERS = {};
 
 module.exports = {
 
@@ -12,8 +14,14 @@ module.exports = {
      * @param  {Number} port remote api server port
      * @return {Bool}
      */
-    bind: function (host, port) {
+    bind: function (host, port, token) {
         API_URL = ['http://', host, ':', port, '/api/projects/'].join('');
+        if(token){
+            API_TOKEN = token;
+            API_HEADERS = {
+                'X-Authorization: token ' + token;
+            };
+        }
         return true;
     },
 
@@ -26,6 +34,7 @@ module.exports = {
         request({
             url: API_URL,
             method: 'POST',
+            headers: API_HEADERS,
             json: data
         }, callback);
     },
@@ -38,7 +47,8 @@ module.exports = {
     get: function(id, callback) {
         request({
             url: API_URL + id + '/',
-            method: 'GET'
+            method: 'GET',
+            headers: API_HEADERS
         }, callback);
     },
 
@@ -49,7 +59,8 @@ module.exports = {
     getAll: function(callback) {
         request({
             url: API_URL,
-            method: 'GET'
+            method: 'GET',
+            headers: API_HEADERS
         }, callback);
     },
 
@@ -63,6 +74,7 @@ module.exports = {
         request({
             url: API_URL + id + '/',
             method: 'PUT',
+            headers: API_HEADERS,
             json: data
         }, callback);
     },
@@ -75,7 +87,8 @@ module.exports = {
     remove: function(id, callback) {
         request({
             url: API_URL + id + '/',
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: API_HEADERS
         }, callback);
     }
 };

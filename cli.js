@@ -13,6 +13,7 @@ cli.parse({
     'renderer':     ['r',   'Start renderer'],
     'aerender':     [false, 'PATH to aerender binary',      'path'],
     'host':         ['h',   'Remote HOST:PORT to connect',  'string',   'localhost:3000'],
+    'token':        [false, 'Token to authenticate with API server', 'string', null],
     'mem':          [false, 'aerender % of memory',         'string'],
     'mp':           [false, 'aerender multi frames'],
     'log':          [false, 'file path or URI specifying the location of the log file.', 'string'],
@@ -27,13 +28,13 @@ cli.main(function(args, options) {
 
 // fancy logo
 console.log(`
-                                   | |          
- _ __   _____  ___ __ ___ _ __   __| | ___ _ __ 
+                                   | |
+ _ __   _____  ___ __ ___ _ __   __| | ___ _ __
 | '_ \\ / _ \\ \\/ / '__/ _ \\ '_ \\ / _\` |/ _ \\ '__|
-| | | |  __/>  <| | |  __/ | | | (_| |  __/ |   
-|_| |_|\\___/_/\\_\\_|  \\___|_| |_|\\__,_|\\___|_|   
+| | | |  __/>  <| | |  __/ | | | (_| |  __/ |
+|_| |_|\\___/_/\\_\\_|  \\___|_| |_|\\__,_|\\___|_|
 
-                  VERSION: ${nexrender.version} 
+                  VERSION: ${nexrender.version}
 
 For support and information, please visit:
 http://github.com/Inlife/nexrender
@@ -70,6 +71,7 @@ http://github.com/Inlife/nexrender
         nexrender.renderer.start({
             host: uri[0],
             port: uri[1],
+            token: options.token || null,
             aerender: options.aerender,
             memory: options.mem || undefined,
             multiframes: options.mp || false,

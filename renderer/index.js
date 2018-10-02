@@ -136,7 +136,8 @@ function start(opts) {
     // configure api connection
     api.config({
         host: opts.host || null,
-        port: opts.port || null
+        port: opts.port || null,
+        token: opts.token || null,
     });
 
     // set global aerender path

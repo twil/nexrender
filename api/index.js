@@ -21,6 +21,7 @@ let wrapper = {
 
         let host = opts.host || DEFAULT_API_HOST;
         let port = opts.port || DEFAULT_API_PORT;
+        let token = opts.token || null;
 
         wrapper.registered = router.bind(host, port);
     },
@@ -28,7 +29,7 @@ let wrapper = {
     /**
      * Creates new Project object, saves to server's database
      * @param  {Object} data  Plain object for project
-     * @return {Promise} 
+     * @return {Promise}
      */
     create: (data) => {
 
@@ -45,7 +46,7 @@ let wrapper = {
                 assert( data.composition );
             } catch (err) {
                 return reject(new Error('[error] provide project properties'));
-            } 
+            }
 
             // and arrays
             data.assets      = data.assets      || [];
@@ -57,7 +58,7 @@ let wrapper = {
 
                 // parse json
                 if (typeof data === 'string') data = JSON.parse(data);
-                
+
                 // verify
                 if (!err && data && data.template && res.statusCode === 200) {
                     return resolve( new Project(data, wrapper) );
@@ -71,7 +72,7 @@ let wrapper = {
 
     /**
      * Get single or multiple entities of Project
-     * @optional @param {Number} id 
+     * @optional @param {Number} id
      * @return {Promise}
      */
     get: (id) => {
@@ -101,7 +102,7 @@ let wrapper = {
                     // iterate and create objects
                     for (let obj of data) {
                         results.push( new Project( obj, wrapper ) );
-                    } 
+                    }
 
                     resolve(results);
                 });

@@ -18,7 +18,7 @@ class Controller {
 
         // load file sync database
         var db = low(SERVER_DB_PATH);
-            db.defaults({ projects: [] }).value();
+        db.defaults({ projects: [] }).value();
         this.db = db.get('projects');
 
         // bind useful findAll method
@@ -63,7 +63,7 @@ class Controller {
      */
     get(id) {
         if (!initialized) this.initialize();
-        
+
         // get project by id, or get all items if id not provided
         return new Promise((resolve, reject) => {
             resolve( this.db.findAll( id ? { uid: id } : {} ) || reject( {} ).value() );
@@ -78,7 +78,7 @@ class Controller {
      */
     update(id, data) {
         if (!initialized) this.initialize();
-        
+
         // set default data
         data.updatedAt = new Date;
 
@@ -95,7 +95,7 @@ class Controller {
      */
     delete(id) {
         if (!initialized) this.initialize();
-        
+
         // remove project by id
         return new Promise((resolve, reject) => {
             resolve( this.db.remove({ uid : id }).value() );
