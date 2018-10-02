@@ -57,6 +57,7 @@ module.exports = {
      * @param  {Function} callback
      */
     getAll: function(callback) {
+        console.log('HEADERS: ' + API_HEADERS);
         request({
             url: API_URL,
             method: 'GET',

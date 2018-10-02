@@ -68,6 +68,8 @@ http://github.com/Inlife/nexrender
         // split uri on host and port
         let uri = options.host.split(':');
 
+        console.log('TOKEN: ' + options.token);
+
         nexrender.renderer.start({
             host: uri[0],
             port: uri[1],
