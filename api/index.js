@@ -23,7 +23,7 @@ let wrapper = {
         let port = opts.port || DEFAULT_API_PORT;
         let token = opts.token || null;
 
-        wrapper.registered = router.bind(host, port);
+        wrapper.registered = router.bind(host, port, token);
     },
 
     /**
