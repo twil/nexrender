@@ -6,6 +6,7 @@ const fs            = require('fs-extra');
 const path          = require('path');
 const async         = require('async');
 const FormData      = require('form-data');
+const parseUrl      = require('url').parse;
 
 const RESULTS_DIR = process.env.RESULTS_DIR || 'results';
 
@@ -38,6 +39,18 @@ module.exports = function(project) {
                 form.append('status', 'finished');
                 form.append('token', token);
                 form.append('result', fs.createReadStream(resultPath));
+
+                // prepare params
+                let params = parseUrl(url);
+                let options = {
+                    protocol: params.protocol,
+                    path: params.pathname,
+                    host: params.hostname,
+                    headers: {
+                        'X-Authorization': 'token ' + token
+                    }
+                };
+
                 form.submit(url, function(err, res) {
                     if (err) {
                         logger.info(`[${project.uid}] upload failed. skipping...`);
