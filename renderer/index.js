@@ -65,7 +65,8 @@ function applyTasks(project, resolve, reject) {
             logger.info('Error message:', err.message || err);
 
             // just in case
-            cleanup(project);
+            let updateCurrentAction = false;
+            cleanup(project, updateCurrentAction);
 
             // project encountered an error
             project.failure(err).then(() => {
