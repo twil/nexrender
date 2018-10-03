@@ -89,19 +89,23 @@ class Project {
     }
 
     /**
-     * Sets project current action
+     * Sets project's current action
+     *
+     * update only currentAction property
+     *
      * @private
      * @param {String} action
      */
     setCurrentActionAndSave(action) {
-        return new Promise((resolve, reject) => {
-            this.currentAction = action;
+        this.currentAction = action;
 
-            // save entity and resolve promise
-            this.save().then(() => {
-                resolve(this);
-            });
-        });
+        let data = {
+            uid: this.uid,
+            currentAction: this.currentAction
+        }
+
+        // save entity and resolve promise
+        return (this.api !== null) ? this.api.update(data) : new Promise(r => r());
     }
 
     /**
