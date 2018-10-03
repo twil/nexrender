@@ -31,6 +31,8 @@ module.exports = function(project) {
         fs.pathExists(resultPath)
             .then(exists => {
                 var form = new FormData();
+                // be compliant with the project code
+                form.append('state', 'finished');
                 form.append('status', 'finished');
                 form.append('token', token);
                 form.append('result', fs.createReadStream(resultPath));

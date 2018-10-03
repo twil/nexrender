@@ -57,7 +57,6 @@ module.exports = {
      * @param  {Function} callback
      */
     getAll: function(callback) {
-        console.log('HEADERS["X-Authorization"]: ' + API_HEADERS['X-Authorization']);
         request({
             url: API_URL,
             method: 'GET',
