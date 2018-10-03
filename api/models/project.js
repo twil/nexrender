@@ -32,7 +32,7 @@ class Project {
 
     /**
      * Serialize project properties to plain object
-     * @return {Object} 
+     * @return {Object}
      */
     serialize() {
         return {
@@ -50,7 +50,7 @@ class Project {
 
     /**
      * Desirialize data from plain object to Project object
-     * @param  {Object} params 
+     * @param  {Object} params
      */
     deserialize(params) {
         let data            = params            || {};
@@ -80,6 +80,22 @@ class Project {
 
             // call inner method (for project entity created on renderer side)
             this.callMethod( state );
+
+            // save entity and resolve promise
+            this.save().then(() => {
+                resolve(this);
+            });
+        });
+    }
+
+    /**
+     * Sets project current action
+     * @private
+     * @param {String} action
+     */
+    setCurrentActionAndSave(action) {
+        return new Promise((resolve, reject) => {
+            this.currentAction = action;
 
             // save entity and resolve promise
             this.save().then(() => {
@@ -120,7 +136,7 @@ class Project {
      */
     onTick() {
         if (this.api === null) return;
-        
+
         this.api.get(this.uid).then((project) => {
             if (this.state !== project.state) {
                 this.deserialize( project );
@@ -165,7 +181,7 @@ class Project {
     }
 
     /**
-     * Event caller 
+     * Event caller
      * @param  {String} method Event name
      */
     callMethod(method) {

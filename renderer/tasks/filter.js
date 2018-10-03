@@ -9,6 +9,8 @@ const path  = require('path');
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
+        project.setCurrentActionAndSave('filter');
+
         logger.info(`[${project.uid}] filtering image assets...`);
 
         // initialize empty call-queue array

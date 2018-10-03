@@ -42,6 +42,8 @@ function downloadFromS3(bucket, key, dstDir, dstName) {
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
+        project.setCurrentActionAndSave('download');
+
         logger.info(`[${project.uid}] downloading assets...`);
 
         // iterate over each asset to check for custom template

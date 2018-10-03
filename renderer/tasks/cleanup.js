@@ -14,6 +14,8 @@ module.exports = function(project) {
 
         logger.info(`[${project.uid}] cleaning up...`);
 
+        project.setCurrentActionAndSave('cleanup');
+
         fs.remove( project.workpath, (err) => {
             return (err) ? reject(err) : resolve(project);
         })

@@ -19,6 +19,8 @@ let spawn = child_process.spawn;
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
+        project.setCurrentActionAndSave('ffmpeg');
+
         logger.info(`[${project.uid}] postprocess with ffmpeg...`);
 
         //let source = path.join( RESULTS_DIR, project.uid + '_' + project.resultname );

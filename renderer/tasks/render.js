@@ -14,6 +14,8 @@ let spawn = child_process.spawn;
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
+        project.setCurrentActionAndSave('render');
+
         logger.info(`[${project.uid}] rendering project...`);
 
         // create container for data and parameters

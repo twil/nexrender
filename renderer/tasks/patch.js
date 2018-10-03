@@ -77,6 +77,8 @@ function processTemplateFile(project, callback) {
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
+        project.setCurrentActionAndSave('patch');
+
         logger.info(`[${project.uid}] patching project...`);
 
         // Iterate over assets,
