@@ -97,7 +97,7 @@ function setCurrentAction(action) {
         return new Promise((resolve, reject) => {
             project.setCurrentActionAndSave(action);
             return resolve(project);
-        }
+        });
     }
 }
 
