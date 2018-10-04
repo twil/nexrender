@@ -99,9 +99,12 @@ class Project {
     setCurrentActionAndSave(action) {
         this.currentAction = action;
 
+        let startTime = this.startTime || 0;
+
         let data = {
             uid: this.uid,
-            currentAction: this.currentAction
+            currentAction: this.currentAction,
+            timeSpent: Math.floor(Date.now() - startTime)
         }
 
         // save entity and return promise

@@ -30,6 +30,8 @@ const API_REQUEST_INTERVAL = process.env.API_REQUEST_INTERVAL || 15 * 60 * 1000;
  */
 function applyTasks(project, resolve, reject) {
 
+    project.startTime  = Date.now();
+
     // TODO: make this ugly motherfucker
     // down below look nicer :D
     project
