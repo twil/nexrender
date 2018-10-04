@@ -98,8 +98,12 @@ function setCurrentAction(action) {
             project.setCurrentActionAndSave(action)
             .then(() => {
                 logger.info("Project.currentAction == " + action);
+                resolve(project);
+            })
+            .catch(() => {
+                logger.info("Failed to set Project.currentAction == " + action);
+                resolve(project);
             });
-            return resolve(project);
         });
     }
 }
