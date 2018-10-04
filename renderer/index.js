@@ -95,7 +95,10 @@ function applyTasks(project, resolve, reject) {
 function setCurrentAction(action) {
     return function(project) {
         return new Promise((resolve, reject) => {
-            project.setCurrentActionAndSave(action);
+            project.setCurrentActionAndSave(action)
+            .then(() => {
+                logger.info("Project.currentAction == " + action);
+            });
             return resolve(project);
         });
     }

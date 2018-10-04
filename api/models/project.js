@@ -104,7 +104,7 @@ class Project {
             currentAction: this.currentAction
         }
 
-        // save entity and resolve promise
+        // save entity and return promise
         return (this.api !== null) ? this.api.update(data) : new Promise(r => r());
     }
 
