@@ -18,8 +18,6 @@ const RESULTS_DIR = process.env.RESULTS_DIR || 'results';
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        project.setCurrentActionAndSave('upload_results');
-
         logger.info(`[${project.uid}] uploading the result...`);
 
         let resultPath = path.join( RESULTS_DIR, project.uid + '_result.mp4' );

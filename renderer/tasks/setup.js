@@ -15,8 +15,6 @@ const TEMP_DIRECTORY        = process.env.TEMP_DIRECTORY        || 'temp';
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        project.setCurrentActionAndSave('setup');
-
         logger.info(`[${project.uid}] setting up project...`);
 
         // setup project's workpath

@@ -34,17 +34,29 @@ function applyTasks(project, resolve, reject) {
     // down below look nicer :D
     project
         .prepare()
+        .then(setCurrentAction('setup'))
         .then(setup)
+        .then(setCurrentAction('download'))
         .then(download)
+        .then(setCurrentAction('rename'))
         .then(rename)
+        .then(setCurrentAction('filter'))
         .then(filter)
+        .then(setCurrentAction('patch'))
         .then(patch)
+        .then(setCurrentAction('render'))
         .then(render)
+        .then(setCurrentAction('verify'))
         .then(verify)
+        .then(setCurrentAction('ffmpeg'))
         .then(ffmpeg)
+        .then(setCurrentAction('uploadResult'))
         .then(uploadResult)
+        //.then(setCurrentAction('actions'))
         //.then(actions)
+        .then(setCurrentAction('cleanup'))
         .then(cleanup)
+        .then(setCurrentAction('done'))
         .then((project) => {
 
             logger.info('----------------------------');
@@ -74,6 +86,20 @@ function applyTasks(project, resolve, reject) {
             })
         });
 };
+
+/**
+ * Save some progress
+ *
+ * TODO: project.setCurrentActionAndSave might fail
+ */
+function setCurrentAction(action) {
+    return function(project) {
+        return new Promise((resolve, reject) => {
+            project.setCurrentActionAndSave(action);
+            return resolve(project);
+        }
+    }
+}
 
 /**
  * Requests list of all projects

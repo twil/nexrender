@@ -17,8 +17,6 @@ const RESULTS_DIR = process.env.RESULTS_DIR || 'results';
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        project.setCurrentActionAndSave('actions');
-
         let src = path.join( project.workpath, project.resultname );
         let dst = path.join( RESULTS_DIR, project.uid + '_' + project.resultname );
 

@@ -30,8 +30,6 @@ function getLogs(project, callback) {
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        project.setCurrentActionAndSave('verify');
-
         logger.info(`[${project.uid}] verifying project...`);
 
         //TEMP: workaround for JPEG sequences mode

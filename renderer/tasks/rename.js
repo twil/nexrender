@@ -14,8 +14,6 @@ const async     = require('async');
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        project.setCurrentActionAndSave('rename');
-
         logger.info(`[${project.uid}] renaming assets...`);
 
         // initialize empty call-queue array
