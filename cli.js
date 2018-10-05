@@ -13,6 +13,7 @@ cli.parse({
     'renderer':     ['r',   'Start renderer'],
     'aerender':     [false, 'PATH to aerender binary',      'path'],
     'host':         ['h',   'Remote HOST:PORT to connect',  'string',   'localhost:3000'],
+    'ssl':          [false  'SSL or not', 'true', false],
     'token':        [false, 'Token to authenticate with API server', 'string', null],
     'mem':          [false, 'aerender % of memory',         'string'],
     'mp':           [false, 'aerender multi frames'],
@@ -71,6 +72,7 @@ http://github.com/Inlife/nexrender
         nexrender.renderer.start({
             host: uri[0],
             port: uri[1],
+            ssl: options.ssl || false,
             token: options.token || null,
             aerender: options.aerender,
             memory: options.mem || undefined,

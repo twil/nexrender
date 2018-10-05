@@ -14,8 +14,12 @@ module.exports = {
      * @param  {Number} port remote api server port
      * @return {Bool}
      */
-    bind: function (host, port, token) {
-        API_URL = ['http://', host, ':', port, '/api/projects/'].join('');
+    bind: function (host, port, ssl, token) {
+        let protocol = 'http://';
+        if(ssl) {
+          protocol = 'https://';
+        }
+        API_URL = [protocol, host, ':', port, '/api/projects/'].join('');
         if(token){
             API_TOKEN = token;
             API_HEADERS = {

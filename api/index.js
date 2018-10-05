@@ -39,9 +39,10 @@ let wrapper = {
 
         let host = opts.host || DEFAULT_API_HOST;
         let port = opts.port || DEFAULT_API_PORT;
+        let ssl = opts.ssl || false;
         let token = opts.token || null;
 
-        wrapper.registered = router.bind(host, port, token);
+        wrapper.registered = router.bind(host, port, ssl, token);
     },
 
     /**

@@ -176,7 +176,8 @@ function start(opts) {
     api.config({
         host: opts.host || null,
         port: opts.port || null,
-        token: opts.token || null,
+        ssl: opts.ssl || false,
+        token: opts.token || null
     });
 
     // set global aerender path
