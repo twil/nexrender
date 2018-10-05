@@ -30,7 +30,7 @@ function copy(src, dstDir) {
  * Check for asset.md5 hash and if present - save to a cache
  */
 function downloadWithCache(asset, dst) {
-    let cacheDst = path.join(CACHE_DIR, dst);
+    let cacheDst = CACHE_DIR;
     let fileName = path.basename(url.parse(asset.src).pathname);
     let cacheFile = path.join(cacheDst, fileName);
 
