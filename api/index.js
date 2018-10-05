@@ -9,6 +9,24 @@ let Project   = require('./models/project');
 let DEFAULT_API_HOST = 'localhost';
 let DEFAULT_API_PORT = 3000;
 
+
+/**
+ * Get json or reject promise
+ */
+function _decode_response(data, response, reject) {
+    try {
+        if (typeof data === 'string') {
+            data = JSON.parse(data);
+        }
+    }
+    catch(e) {
+        return reject('Failed to decode response. Status: ' + response.statusCode + '\nResponse: ' + data);
+    }
+
+    return data;
+}
+
+
 let wrapper = {
     registered: false,
 
@@ -57,7 +75,7 @@ let wrapper = {
             router.create(data, (err, res, data) => {
 
                 // parse json
-                if (typeof data === 'string') data = JSON.parse(data);
+                data = _decode_response(data, res, reject);
 
                 // verify
                 if (!err && data && data.template && res.statusCode === 200) {
@@ -85,7 +103,7 @@ let wrapper = {
                 // return single
                 router.get(id, (err, res, data) => {
                     // parse json
-                    if (typeof data === 'string') data = JSON.parse(data);
+                    data = _decode_response(data, res, reject);
 
                     // verify || notify about error
                     return (err || res.statusCode !== 200) ? reject(err || res.statusMessage) : resolve( new Project(data, wrapper) );
@@ -97,7 +115,8 @@ let wrapper = {
                     if (!res || res.statusCode !== 200) return reject( new Error('Error occured during getting list of projects') );
 
                     // read json
-                    let results = []; if (typeof data === 'string') data = JSON.parse(data);
+                    let results = [];
+                    data = _decode_response(data, res, reject);
 
                     // iterate and create objects
                     for (let obj of data) {
@@ -128,7 +147,7 @@ let wrapper = {
             router.update(object.uid, uobj, (err, res, data) => {
 
                 // parse json
-                if (typeof data === 'string') data = JSON.parse(data);
+                data = _decode_response(data, res, reject);
 
                 // verify
                 if (!err && data && data.template && res.statusCode === 200) {
@@ -157,7 +176,7 @@ let wrapper = {
             router.remove(id, (err, res, data) => {
 
                 // parse json
-                if (typeof data === 'string') data = JSON.parse(data);
+                data = _decode_response(data, res, reject);
 
                 // verify || notify about error
                 return (err || res.statusCode !== 200) ? reject(err || res.statusMessage) : resolve(data);

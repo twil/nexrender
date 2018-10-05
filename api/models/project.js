@@ -104,8 +104,8 @@ class Project {
         let data = {
             uid: this.uid,
             currentAction: this.currentAction,
-            timeSpent: Math.floor(Date.now() - startTime)
-        }
+            timeSpent: Date.now() - startTime
+        };
 
         // save entity and return promise
         return (this.api !== null) ? this.api.update(data) : new Promise(r => r());
