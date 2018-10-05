@@ -13,7 +13,7 @@ cli.parse({
     'renderer':     ['r',   'Start renderer'],
     'aerender':     [false, 'PATH to aerender binary',      'path'],
     'host':         ['h',   'Remote HOST:PORT to connect',  'string',   'localhost:3000'],
-    'ssl':          [false  'SSL or not', 'true', false],
+    'ssl':          [false, 'SSL or not', 'true', false],
     'token':        [false, 'Token to authenticate with API server', 'string', null],
     'mem':          [false, 'aerender % of memory',         'string'],
     'mp':           [false, 'aerender multi frames'],
