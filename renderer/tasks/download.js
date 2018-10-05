@@ -130,12 +130,12 @@ module.exports = function(project) {
             if (asset.type === 's3') {
                 return downloadFromS3(asset.bucket, asset.key, project.workpath, path.basename(url.parse(asset.src).pathname));
             } else if (asset.type === 'url' || !isLocalPath(asset.src)) {
-                // return download(asset.src, project.workpath, {
-                //     retry: 3//,
-                //     //timeout: 120 * 1000 // 2 minutes
-                // });
+                return download(asset.src, project.workpath, {
+                    retry: 3//,
+                    //timeout: 120 * 1000 // 2 minutes
+                });
 
-                return downloadWithCache(asset, project.workpath);
+                // return downloadWithCache(asset, project.workpath);
             } else if (asset.type === 'path' || isLocalPath(asset.src)) {
                 return copy(asset.src, project.workpath);
             }
