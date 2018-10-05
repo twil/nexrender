@@ -91,20 +91,35 @@ class Project {
     /**
      * Sets project's current action
      *
-     * update only currentAction property
+     * Log action changes and times and more.
+     * TODO: rename
      *
      * @private
      * @param {String} action
      */
     setCurrentActionAndSave(action) {
-        this.currentAction = action;
+        let startTime = this.startTime || Date.now();
+        let timeSpent = Date.now() - startTime;
 
-        let startTime = this.startTime || 0;
+        // init new log
+        if(action === 'setup') {
+            this.actionsLog = [];
+        }
+        else {
+            this.actionsLog.push({
+                action: this.currentAction,
+                timeSpent: timeSpent - this.timeSpent
+            });
+        }
+
+        this.timeSpent = timeSpent;
+        this.currentAction = action;
 
         let data = {
             uid: this.uid,
             currentAction: this.currentAction,
-            timeSpent: Date.now() - startTime
+            timeSpent: timeSpent,
+            actionsLog: this.actionsLog
         };
 
         // save entity and return promise
