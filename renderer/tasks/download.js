@@ -9,8 +9,9 @@ const path     = require('path');
 const AWS      = require('aws-sdk');
 const url      = require('url');
 const crypto   = require('crypto');
+const util     = require('util');
 
-const move = Promise.promisify(fs.move);
+const move = util.promisify(fs.move);
 
 // TODO: remove?
 const CACHE_DIR = process.env.CACHE_DIR || 'cache';
