@@ -34,6 +34,9 @@ function copy(src, dstDir) {
 }
 
 function moveFile(src, dst) {
+    if(src == dst) {
+        return true;
+    }
     if(fs.existsSync(dst)) {
         fs.removeSync(dst);
     }
