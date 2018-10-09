@@ -40,8 +40,9 @@ function applyTasks(project, resolve, reject) {
         .then(setup)
         .then(setCurrentAction('download'))
         .then(download)
-        .then(setCurrentAction('rename'))
-        .then(rename)
+        // put in the download action
+        //.then(setCurrentAction('rename'))
+        //.then(rename)
         .then(setCurrentAction('filter'))
         .then(filter)
         .then(setCurrentAction('patch'))
