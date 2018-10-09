@@ -130,6 +130,15 @@ module.exports = function(project) {
             if (asset.type === 's3') {
                 return downloadFromS3(asset.bucket, asset.key, project.workpath, path.basename(url.parse(asset.src).pathname));
             } else if (asset.type === 'url' || !isLocalPath(asset.src)) {
+
+                // we need a way to skip downloading a same project everytime
+                // used with settings.clearCache.
+                let fileName = path.basename(url.parse(asset.src).pathname);
+                let filePath = path.join(project.workpath, fileName);
+                if(fs.existsSync(filePath)) {
+                    return true;
+                }
+
                 return download(asset.src, project.workpath, {
                     retry: 3//,
                     //timeout: 120 * 1000 // 2 minutes

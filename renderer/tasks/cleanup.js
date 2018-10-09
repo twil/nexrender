@@ -14,6 +14,13 @@ module.exports = function(project, updateCurrentAction) {
 
         logger.info(`[${project.uid}] cleaning up...`);
 
+        // we need a way to skip downloading a same project everytime
+        // used with settings.tmpDir.
+        if(typeof project.settings.clearCache !== 'undefined' &&
+           !project.settings.clearCache) {
+            return resolve(project);
+        }
+
         fs.remove( project.workpath, (err) => {
             return (err) ? reject(err) : resolve(project);
         })

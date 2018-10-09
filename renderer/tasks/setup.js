@@ -18,7 +18,13 @@ module.exports = function(project) {
         logger.info(`[${project.uid}] setting up project...`);
 
         // setup project's workpath
-        project.workpath   = path.join(TEMP_DIRECTORY,      project.uid);
+        // we need a way to skip downloading a same project everytime
+        // used with settings.clearCache
+        let tmpDirName = project.uid;
+        if(typeof project.settings.tmpDir !== 'undefined') {
+            tmpDirName = project.settings.tmpDir;
+        }
+        project.workpath   = path.join(TEMP_DIRECTORY,      tmpDirName);
 
         // set template path && projectname
         let templatepath   = path.join(TEMPLATES_DIRECTORY, project.template);
