@@ -10,7 +10,11 @@ const AWS      = require('aws-sdk');
 const url      = require('url');
 const crypto   = require('crypto');
 
+// TODO: remove?
 const CACHE_DIR = process.env.CACHE_DIR || 'cache';
+
+// Don't cache this assets
+const DONT_CACHE_ASSET_TYPES = ['project', 'script', 'data'];
 
 
 function isLocalPath(src) {
@@ -28,6 +32,8 @@ function copy(src, dstDir) {
 
 /**
  * Check for asset.md5 hash and if present - save to a cache
+ *
+ * TODO: remove?
  */
 function downloadWithCache(asset, dst) {
     let cacheDst = CACHE_DIR;
@@ -135,7 +141,8 @@ module.exports = function(project) {
                 // used with settings.clearCache.
                 let fileName = path.basename(url.parse(asset.src).pathname);
                 let filePath = path.join(project.workpath, fileName);
-                if(fs.existsSync(filePath)) {
+                if(fs.existsSync(filePath) &&
+                   DONT_CACHE_ASSET_TYPES.indexOf(asset.type) === -1) {
                     return true;
                 }
 
