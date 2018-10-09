@@ -18,6 +18,7 @@ module.exports = function(project, updateCurrentAction) {
         // used with settings.tmpDir.
         if(typeof project.settings.clearCache !== 'undefined' &&
            !project.settings.clearCache) {
+            logger.info(`[${project.uid}] clean up skipped.`);
             return resolve(project);
         }
 
