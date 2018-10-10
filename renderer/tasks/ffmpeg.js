@@ -21,41 +21,49 @@ module.exports = function(project) {
 
         logger.info(`[${project.uid}] postprocess with ffmpeg...`);
 
+        if(!project.settings.ffmpeg) {
+            logger.info(`[${project.uid}] no ffmpeg rules. skipping...`);
+            return resolve(project);
+        }
+
         //let source = path.join( RESULTS_DIR, project.uid + '_' + project.resultname );
         let source = path.join( project.workpath, project.resultname );
         let destination = path.join( RESULTS_DIR, project.uid + '_result.mp4' );
 
-        // setup parameters
-        let params = [];
-        params.push('-y');
-        params.push('-i', source);
-        params.push('-pix_fmt:v', 'yuv420p');
-        params.push('-r', '30');
-        params.push(destination)
+        async.eachSeries(project.settings.ffmpeg, function(rule, callback) {
+            rule.unshift('-y');
+            for(let i = 0; i < rule.length; i++) {
+                rule[i] = rule[i].replace('%SOURCE%', source).replace('%RESULT%', destination);
+            }
 
-        // spawn process and begin rendering
-        let ffmpeg = spawn(FFMPEG, params);
+            // spawn process and begin rendering
+            let ffmpeg = spawn(FFMPEG, rule);
 
-        let ffmpegdata = [];
+            let ffmpegdata = [];
 
-        ffmpeg.on('error', (err) => {
-            return reject(new Error('Error starting ffmpeg process, did you set up the path correctly?'));
-        });
+            ffmpeg.on('error', (err) => {
+                return callback(new Error('Error starting ffmpeg process, did you set up the path correctly?'));
+            });
 
-        // on data (logs)
-        ffmpeg.stdout.on('data', (data) => {
-            ffmpegdata.push(data.toString());
-        });
+            // on data (logs)
+            ffmpeg.stdout.on('data', (data) => {
+                ffmpegdata.push(data.toString());
+            });
 
-        // on error (logs)
-        ffmpeg.stderr.on('data', (data) => {
-            ffmpegdata.push(data.toString());
-        });
+            // on error (logs)
+            ffmpeg.stderr.on('data', (data) => {
+                ffmpegdata.push(data.toString());
+            });
 
-        // on finish (code 0 - success, other - error)
-        ffmpeg.on('close', (code) => {
-            if (code !== 0) {
-              return reject( ffmpegdata.join('') );
+            // on finish (code 0 - success, other - error)
+            ffmpeg.on('close', (code) => {
+                if (code !== 0) {
+                  return callback( ffmpegdata.join('') );
+                }
+            });
+        }, function(err) {
+            if(err) {
+                return reject(err);
             }
 
             fs.remove( source, (err) => {
