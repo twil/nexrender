@@ -31,6 +31,11 @@ module.exports = function(project) {
 
         fs.pathExists(resultPath)
             .then(exists => {
+                if(!exists) {
+                    logger.info(`[${project.uid}] result is not found!? skipping...`);
+                    return resolve(project);
+                }
+
                 var form = new FormData();
                 // be compliant with the project code
                 form.append('state', 'finished');
