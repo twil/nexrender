@@ -40,6 +40,7 @@ class Project {
             type:           this.type,
             state:          this.state,
             assets:         this.assets,
+            ffmpeg:         this.ffmpeg,
             template:       this.template,
             settings:       this.settings,
             composition:    this.composition,
@@ -61,6 +62,7 @@ class Project {
         this.composition    = data.composition  || DEFAULT_COMPOSITION;
         this.type           = data.type         || DEFAULT_PROJECT_TYPE;
         this.assets         = data.assets       || [];
+        this.ffmpeg         = data.ffmpeg       || [];
         this.actions        = data.actions      || [];
         this.settings       = data.settings     || { outputModule: AE_OUTPUT_MODULE, outputExt: AE_OUTPUT_EXT };
         this.errorMessage   = data.errorMessage || null;
