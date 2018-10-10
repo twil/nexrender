@@ -21,7 +21,7 @@ module.exports = function(project) {
 
         logger.info(`[${project.uid}] postprocess with ffmpeg...`);
 
-        if(!project.settings.ffmpeg) {
+        if(!project.ffmpeg) {
             logger.info(`[${project.uid}] no ffmpeg rules. skipping...`);
             return resolve(project);
         }
@@ -48,7 +48,7 @@ module.exports = function(project) {
         ]
         */
 
-        async.eachSeries(project.settings.ffmpeg, function(rule, callback) {
+        async.eachSeries(project.ffmpeg, function(rule, callback) {
             rule.unshift('-y');
             for(let i = 0; i < rule.length; i++) {
                 rule[i] = rule[i].replace('%SOURCE%', source).replace('%RESULT%', destination);
