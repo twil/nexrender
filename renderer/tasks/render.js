@@ -29,7 +29,7 @@ module.exports = function(project) {
         // NOTE: if you want to change this field, also goto actions/copy-to-results.js, and apply changes there too
         if (project.settings &&
             project.settings.outputExt &&
-            ['jpeg', 'jpg'].indexOf(
+            ['jpeg', 'jpg', 'png'].indexOf(
                 project.settings.outputExt.toLowerCase()
             ) !== -1
         ) {
