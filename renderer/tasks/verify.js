@@ -35,7 +35,7 @@ module.exports = function(project) {
         //TEMP: workaround for JPEG sequences mode
         if (project.settings &&
             project.settings.outputExt &&
-            ['jpeg', 'jpg'].indexOf(
+            ['jpeg', 'jpg', 'png'].indexOf(
                 project.settings.outputExt.toLowerCase()
             ) !== -1
         ) {
