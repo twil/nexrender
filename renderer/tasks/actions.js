@@ -26,11 +26,11 @@ module.exports = function(project) {
         //TEMP: workaround for JPEG sequences mode
         if (project.settings &&
             project.settings.outputExt &&
-            ['jpeg', 'jpg'].indexOf(
+            ['jpeg', 'jpg', 'png'].indexOf(
                 project.settings.outputExt.toLowerCase()
             ) !== -1
         ) {
-            logger.info(`[${project.uid}] applying actions: found jpeg sequence...`);
+            logger.info(`[${project.uid}] applying actions: found stills sequence...`);
 
             // scan folder
             fs.readdir(project.workpath, (err, files) => {
