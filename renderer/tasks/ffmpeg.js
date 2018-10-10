@@ -30,6 +30,24 @@ module.exports = function(project) {
         let source = path.join( project.workpath, project.resultname );
         let destination = path.join( RESULTS_DIR, project.uid + '_result.mp4' );
 
+        /*
+         * Example
+        [
+        	[
+            '-r', '25', '-i', 'pre_%05d.png',
+            '-r', '25', '-start_number', '00127', '-i', 'middle_lower_%05d.png',
+            '-r', '25', '-start_number', '00127', '-i', 'result_%05d.png',
+            '-r', '25', '-start_number', '00200', '-i', 'post_%05d.png',
+            '-i', 'sound.mp3',
+            '-filter_complex', "[1][2]overlay[middle];[0][middle][3]concat=n=3,fps=fps=25,format=pix_fmts=yuv420p[out]",
+            '-map', "[out]:v:0",
+            '-map', '4:a:0',
+            '-c:v', 'libx264',
+            '%RESULT%'
+          ]
+        ]
+        */
+
         async.eachSeries(project.settings.ffmpeg, function(rule, callback) {
             rule.unshift('-y');
             for(let i = 0; i < rule.length; i++) {
