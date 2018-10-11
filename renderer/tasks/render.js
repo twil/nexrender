@@ -90,6 +90,7 @@ module.exports = function(project) {
         }
 
         // spawn process and begin rendering
+        logger.info(`[${project.uid}] AE CMD: ${process.env.AE_BINARY} ${params.join(" ")}`);
         let ae = spawn(process.env.AE_BINARY, params);
 
         ae.on('error', (err) => {
