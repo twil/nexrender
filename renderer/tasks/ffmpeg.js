@@ -80,6 +80,8 @@ module.exports = function(project) {
                 if (code !== 0) {
                   return callback( ffmpegdata.join('') );
                 }
+                // ok
+                return callback();
             });
         }, function(err) {
             if(err) {
