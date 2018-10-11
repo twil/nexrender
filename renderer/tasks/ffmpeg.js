@@ -83,6 +83,7 @@ module.exports = function(project) {
             });
         }, function(err) {
             if(err) {
+                logger.info(`[${project.uid}] ffmpeg error: ${err}`);
                 return reject(err);
             }
 
