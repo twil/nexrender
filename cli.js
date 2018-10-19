@@ -12,8 +12,7 @@ cli.parse({
     // render node params
     'renderer':     ['r',   'Start renderer'],
     'aerender':     [false, 'PATH to aerender binary',      'path'],
-    'host':         ['h',   'Remote HOST:PORT to connect',  'string',   'localhost:3000'],
-    'ssl':          [false, 'SSL or not', 'bool', false],
+    'api':          [false, 'Remote API to connect to. Default: http://localhost:3000/api/',  'string',   'http://localhost:3000/api/'],
     'token':        [false, 'Token to authenticate with API server', 'string', null],
     'mem':          [false, 'aerender % of memory',         'string'],
     'mp':           [false, 'aerender multi frames'],
@@ -62,17 +61,8 @@ http://github.com/Inlife/nexrender
             return console.error('[error] provide --aerender=PATH for aerender binary file');
         }
 
-        if (options.host.indexOf(':') === -1) {
-            return console.error('[error] renderer host option must look like HOST:PORT');
-        }
-
-        // split uri on host and port
-        let uri = options.host.split(':');
-
         nexrender.renderer.start({
-            host: uri[0],
-            port: uri[1],
-            ssl: options.ssl || false,
+            api: options.api,
             token: options.token || null,
             aerender: options.aerender,
             memory: options.mem || undefined,

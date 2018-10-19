@@ -10,16 +10,17 @@ module.exports = {
 
     /**
      * Binder for remembering api server host and port
-     * @param  {String} host remote api server host
-     * @param  {Number} port remote api server port
+     * @param  {String} api remote api server base url
+     * @param  {String} token remote api server token
      * @return {Bool}
      */
-    bind: function (host, port, ssl, token) {
-        let protocol = 'http://';
-        if(ssl) {
-          protocol = 'https://';
+    bind: function (api, token) {
+        API_URL = api;
+        if(!API_URL.endsWith('/')) {
+            API_URL += '/';
         }
-        API_URL = [protocol, host, ':', port, '/api/projects/'].join('');
+        API_URL += 'projects/';
+
         if(token){
             API_TOKEN = token;
             API_HEADERS = {

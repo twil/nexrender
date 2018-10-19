@@ -6,9 +6,6 @@ const assert    = require('assert');
 let router    = require('./routers/project');
 let Project   = require('./models/project');
 
-let DEFAULT_API_HOST = 'localhost';
-let DEFAULT_API_PORT = 3000;
-
 
 /**
  * Get json or reject promise
@@ -37,12 +34,10 @@ let wrapper = {
     config: (opts) => {
         var opts = opts || {};
 
-        let host = opts.host || DEFAULT_API_HOST;
-        let port = opts.port || DEFAULT_API_PORT;
-        let ssl = opts.ssl || false;
+        let api = opts.api;
         let token = opts.token || null;
 
-        wrapper.registered = router.bind(host, port, ssl, token);
+        wrapper.registered = router.bind(api, token);
     },
 
     /**

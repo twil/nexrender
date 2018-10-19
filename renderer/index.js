@@ -175,9 +175,7 @@ function start(opts) {
 
     // configure api connection
     api.config({
-        host: opts.host || null,
-        port: opts.port || null,
-        ssl: opts.ssl || false,
+        api: opts.api,
         token: opts.token || null
     });
 
