@@ -41,6 +41,10 @@ module.exports = function(project) {
         params.push('-project',     path.join( process.cwd(), project.workpath, project.template ));
         params.push('-output',      path.join( process.cwd(), project.workpath, project.resultname ));
 
+        if (process.env.AE_REUSE) {
+            params.push('-reuse');
+        }
+        
         // advanced parameters
         if (project.settings) {
 
