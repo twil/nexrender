@@ -49,15 +49,19 @@ module.exports = function(project) {
         */
 
         async.eachSeries(project.ffmpeg, function(rule, callback) {
-            rule.unshift('-y');
-            for(let i = 0; i < rule.length; i++) {
-                rule[i] = rule[i].replace('%SOURCE%', source)
-                                 .replace('%RESULT%', destination)
-                                 .replace('%WORKPATH%', project.workpath);
+            // make a copy
+            let command = JSON.stringify(rule);
+            command = JSON.parse(command);
+            command.unshift('-y');
+
+            for(let i = 0; i < command.length; i++) {
+                command[i] = command[i].replace('%SOURCE%', source)
+                                       .replace('%RESULT%', destination)
+                                       .replace('%WORKPATH%', project.workpath);
             }
 
             // spawn process and begin rendering
-            let ffmpeg = spawn(FFMPEG, rule);
+            let ffmpeg = spawn(FFMPEG, command);
 
             let ffmpegdata = [];
 
