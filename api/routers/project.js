@@ -8,6 +8,9 @@ let API_HEADERS = {};
 
 module.exports = {
 
+    api: null,
+    token: null,
+    
     /**
      * Binder for remembering api server host and port
      * @param  {String} api remote api server base url
@@ -16,6 +19,10 @@ module.exports = {
      */
     bind: function (api, token) {
         API_URL = api;
+
+        this.url = api;
+        this.token = token;
+        
         if(!API_URL.endsWith('/')) {
             API_URL += '/';
         }
