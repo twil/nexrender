@@ -36,10 +36,10 @@ let wrapper = {
     config: (opts) => {
         var opts = opts || {};
 
-        this.api = opts.api;
-        this.token = opts.token || null;
+        wrapper.api = opts.api;
+        wrapper.token = opts.token || null;
 
-        wrapper.registered = router.bind(this.api, this.token);
+        wrapper.registered = router.bind(wrapper.api, wrapper.token);
     },
 
     /**
