@@ -17,7 +17,7 @@ const move = util.promisify(fs.move);
 const CACHE_DIR = process.env.CACHE_DIR || 'cache';
 
 // Don't cache this assets
-const DONT_CACHE_ASSET_TYPES = ['project', 'script', 'data'];
+const DONT_CACHE_ASSET_TYPES = ['project', 'script', 'data', 'dontcache'];
 
 
 function isLocalPath(src) {
