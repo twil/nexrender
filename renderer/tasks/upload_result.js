@@ -54,9 +54,11 @@ module.exports = function(project) {
                     }
                 };
 
+                logger.info(`[${project.uid}] uploading to: ${url}`);
+
                 form.submit(options, function(err, res) {
                     if (err) {
-                        logger.info(`[${project.uid}] upload failed. skipping...`);
+                        logger.info(`[${project.uid}] upload failed. error: ${err}`);
                     }
                     else {
                         logger.info(`[${project.uid}] uploaded.`);
