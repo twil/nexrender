@@ -26,6 +26,8 @@ function _decode_response(data, response, reject) {
 
 let wrapper = {
     registered: false,
+    api: null,
+    token: null,
 
     /**
      * Configuration for api connections
@@ -34,10 +36,10 @@ let wrapper = {
     config: (opts) => {
         var opts = opts || {};
 
-        let api = opts.api;
-        let token = opts.token || null;
+        this.api = opts.api;
+        this.token = opts.token || null;
 
-        wrapper.registered = router.bind(api, token);
+        wrapper.registered = router.bind(this.api, this.token);
     },
 
     /**
