@@ -43,75 +43,6 @@ function moveFile(src, dst) {
     return move(src, dst);
 }
 
-/**
- * Check for asset.md5 hash and if present - save to a cache
- *
- * TODO: remove?
- */
-function downloadWithCache(asset, dst) {
-    let cacheDst = CACHE_DIR;
-    let fileName = path.basename(url.parse(asset.src).pathname);
-    let cacheFile = path.join(cacheDst, fileName);
-
-    // download
-    let downloadFunc = function(resolve, reject) {
-        download(asset.src, cacheDst, {
-            retry: 3//,
-            //timeout: 120 * 1000 // 2 minutes
-        })
-        .then(() => {
-            return copy(cacheFile, dst);
-        })
-        .then(() => {
-            return resolve();
-        })
-        .catch((err) => {
-            return reject(err);
-        });
-    };
-
-    // download
-    if(typeof asset.md5 === 'undefined' || !fs.existsSync(cacheFile)) {
-        return new Promise((resolve, reject) => {
-            downloadFunc(resolve, reject);
-        });
-    }
-    // check cache
-    else {
-        return new Promise((resolve, reject) => {
-            let hash = crypto.createHash('md5');
-            let stream = fs.createReadStream(cacheFile);
-
-            stream.on('data', function(data) {
-                hash.update(data, 'utf8');
-            })
-
-            stream.on('end', function() {
-                let h = hash.digest('hex');
-
-                // hit
-                if(asset.md5 == h) {
-                    copy(cacheFile, dst)
-                    .then(() => {
-                        return resolve();
-                    })
-                    .catch((err) => {
-                        return reject(err);
-                    });
-                }
-                // not hit
-                else {
-                    downloadFunc(resolve, reject);
-                }
-            })
-
-            stream.on('error', function(error) {
-                downloadFunc(resolve, reject);
-            })
-        });
-    }
-}
-
 function downloadFromS3(bucket, key, dstDir, dstName) {
     var s3 = new AWS.S3();
     var params = {Bucket: bucket, Key: key};
@@ -143,6 +74,11 @@ module.exports = function(project) {
                 project.template = asset.name;
             }
         }
+        
+        let headers = {};
+        if(project.api && project.api.token) {
+            headers['X-Authorization'] = 'token ' + project.api.token;
+        }
 
         // iterate over each asset and download it (copy it)
         Promise.all(project.assets.map((asset) => {
@@ -162,7 +98,8 @@ module.exports = function(project) {
                 });
             } else if (asset.type === 'url' || !isLocalPath(asset.src)) {
                 return download(asset.src, project.workpath, {
-                    retry: 3
+                    retry: 3,
+                    headers: headers
                 })
                 .then(() => {
                     return moveFile(src, dst);
