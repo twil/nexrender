@@ -14,6 +14,8 @@ const RESULTS_DIR = process.env.RESULTS_DIR || 'results';
  * HACK: make it configurable
  *
  * works only with ffmpeg action for now
+ *
+ * TODO: add project setting to skip this action. might be nice to have mandatory and optional tasks.
  */
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
@@ -25,15 +27,17 @@ module.exports = function(project) {
         let url = project.settings.resultCallback;
 
         if (!token || !url) {
-            logger.info(`[${project.uid}] project.settings.token or project.settings.resultCallback is not set. skipping...`);
-            return resolve(project);
+            let message = `project.settings.token or project.settings.resultCallback is not set.`;
+            logger.warn(`[${project.uid}] ${message}`);
+            return reject(message);
         }
 
         fs.pathExists(resultPath)
             .then(exists => {
                 if(!exists) {
-                    logger.info(`[${project.uid}] result is not found!? skipping...`);
-                    return resolve(project);
+                    logger.warn(`[${project.uid}] upload failed. result is not found!?`);
+                    return reject('upload failed. result is not found!?');
+                    //return resolve(project);
                 }
 
                 var form = new FormData();
@@ -47,8 +51,9 @@ module.exports = function(project) {
                 let params = parseUrl(url);
                 let options = {
                     protocol: params.protocol,
-                    path: params.pathname,
                     host: params.hostname,
+                    port: params.port,
+                    path: params.pathname,
                     headers: {
                         'X-Authorization': 'token ' + token
                     }
@@ -57,18 +62,29 @@ module.exports = function(project) {
                 logger.info(`[${project.uid}] uploading to: ${url}`);
 
                 form.submit(options, function(err, res) {
+                    let errors = ''
+                    if(res && (res.statusCode < 200 || res.statusCode >= 300)) {
+                        let message = `upload failed. code: ${res.statusCode}. message: ${res.statusMessage}`;
+                        logger.error(`[${project.uid}] ${message}`);
+                        errors += message;
+                    }
                     if (err) {
-                        logger.info(`[${project.uid}] upload failed. error: ${err}`);
+                        let message = `upload failed. error: ${err}`;
+                        logger.error(`[${project.uid}] ${message}`);
+                        errors += message;
                     }
                     else {
                         logger.info(`[${project.uid}] uploaded.`);
                     }
-                    return resolve(project);
+                    
+                    return errors ? reject(errors) : resolve(project);
                 });
             })
             .catch((err) => {
-                logger.info(`[${project.uid}] result is not found!? skipping...`);
-                return resolve(project);
+                let message = `upload failed. result is not found!? error: ${err}`;
+                logger.warn(`[${project.uid}] ${message}`);
+                return reject(message);
+                //return resolve(project);
             });
     });
 };
