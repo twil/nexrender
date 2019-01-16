@@ -30,6 +30,8 @@ const API_REQUEST_INTERVAL = process.env.API_REQUEST_INTERVAL || 15 * 60 * 1000;
  */
 function applyTasks(project, resolve, reject) {
 
+    logger.warn(`Rendering project ${project.uid}`);
+
     project.startTime  = Date.now();
 
     // TODO: make this ugly motherfucker
@@ -63,7 +65,7 @@ function applyTasks(project, resolve, reject) {
         .then((project) => {
 
             logger.info('----------------------------');
-            logger.info(`[${project.uid}] project finished`);
+            logger.warn(`[${project.uid}] project finished`);
             logger.info('----------------------------\n');
 
             // project is finished
@@ -74,10 +76,10 @@ function applyTasks(project, resolve, reject) {
         .catch((err) => {
 
             logger.info('--------------------------');
-            logger.info(`[${project.uid}] project failed`);
+            logger.error(`[${project.uid}] project failed`);
             logger.info('--------------------------\n');
 
-            logger.info('Error message:', err.message || err);
+            logger.error('Error message:', err.message || err);
 
             // just in case
             let updateCurrentAction = false;
@@ -170,6 +172,8 @@ function start(opts) {
     logger.info('=========[RENDERNODE]=========\n')
     logger.info('nexrender.renderer is starting\n');
     logger.info('------------------------------');
+
+    logger.warn(`Request projects every ${API_REQUEST_INTERVAL} milliseconds`);
 
     opts = opts || {};
 
