@@ -28,7 +28,7 @@ function copy(src, dstDir) {
     return new Promise((resolve, reject) => {
         const dstPath = path.join(dstDir, path.basename(src));
         fs.copy(src, dstPath, (err) => {
-            return (err ? reject(err) : resolve());
+            return (err ? reject(`Failed to copy ${src}: ${err}`) : resolve());
         });
     });
 }
@@ -52,7 +52,7 @@ function downloadFromS3(bucket, key, dstDir, dstName) {
             resolve();
         });
         s3.getObject(params).createReadStream().on('error', function(err) {
-            reject(err);
+            reject(`Failed to get ${key} from bucket ${bucket}: ${err}`);
         }).pipe(file);
     });
 }
@@ -74,7 +74,7 @@ module.exports = function(project) {
                 project.template = asset.name;
             }
         }
-        
+
         let headers = {};
         if(project.api && project.api.token) {
             headers['X-Authorization'] = 'token ' + project.api.token;
@@ -103,6 +103,9 @@ module.exports = function(project) {
                 })
                 .then(() => {
                     return moveFile(src, dst);
+                })
+                .catch((err) => {
+                    throw `Failed to download ${asset.src}: ${err}`;
                 });
             } else if (asset.type === 'path' || isLocalPath(asset.src)) {
                 return copy(asset.src, project.workpath)
