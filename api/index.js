@@ -17,7 +17,8 @@ function _decode_response(data, response, reject) {
         }
     }
     catch(e) {
-        return reject('Failed to decode response. Status: ' + response.statusCode + '\nResponse: ' + data);
+        reject('Failed to decode response. Status: ' + response.statusCode + '\nResponse: ' + data);
+        return false;
     }
 
     return data;
@@ -71,17 +72,23 @@ let wrapper = {
 
             // request creation
             router.create(data, (err, res, data) => {
+                if(err || res.statusCode !== 200) {
+                    return reject('Failed to create project: ' + (err || res.statusMessage));
+                }
 
                 // parse json
                 data = _decode_response(data, res, reject);
 
                 // verify
-                if (!err && data && data.template && res.statusCode === 200) {
+                if (data && data.template) {
                     return resolve( new Project(data, wrapper) );
                 }
 
-                // notify about error
-                reject( err || res.statusMessage );
+                if(data === false) {
+                    // already rejected!!!
+                    // TODO: strange call
+                }
+
             });
         });
     },
@@ -100,11 +107,19 @@ let wrapper = {
             if (id) {
                 // return single
                 router.get(id, (err, res, data) => {
+                    if(err || res.statusCode !== 200) {
+                        return reject("Failed to get project ID " + id + ". " + (err || res.statusMessage));
+                    }
+
                     // parse json
                     data = _decode_response(data, res, reject);
+                    if(data === false) {
+                        // TODO: already rejected
+                        return;
+                    }
 
-                    // verify || notify about error
-                    return (err || res.statusCode !== 200) ? reject(err || res.statusMessage) : resolve( new Project(data, wrapper) );
+                    // verify
+                    return resolve( new Project(data, wrapper) );
                 });
             } else {
 
@@ -115,6 +130,11 @@ let wrapper = {
                     // read json
                     let results = [];
                     data = _decode_response(data, res, reject);
+
+                    if(data === false) {
+                        //TODO: already rejected
+                        return;
+                    }
 
                     // iterate and create objects
                     for (let obj of data) {
@@ -143,12 +163,15 @@ let wrapper = {
             if (!wrapper.registered) return reject(new Error('[error] call config method first'));
 
             router.update(object.uid, uobj, (err, res, data) => {
+                if(err || res.statusCode === 200) {
+                    return reject("Failed to update project ID " + object.uid);
+                }
 
                 // parse json
                 data = _decode_response(data, res, reject);
 
                 // verify
-                if (!err && data && data.template && res.statusCode === 200) {
+                if (data && data.template) {
                     if (object instanceof Project) {
                         return resolve( object.deserialize(data) );
                     } else {
@@ -157,7 +180,8 @@ let wrapper = {
                 }
 
                 // notify about error
-                reject( err || res.statusMessage );
+                // TODO: already rejected
+                //reject( err || res.statusMessage );
             });
         });
     },
@@ -172,12 +196,20 @@ let wrapper = {
             if (!wrapper.registered) return reject(new Error('[error] call config method first'));
 
             router.remove(id, (err, res, data) => {
+                if(err || res.statusCode !== 200) {
+                    return reject("Failed to remove project ID " + id + ". " + (err || res.statusMessage))
+                }
 
                 // parse json
                 data = _decode_response(data, res, reject);
 
+                if(data === false) {
+                    //TODO: already rejected
+                    return;
+                }
+
                 // verify || notify about error
-                return (err || res.statusCode !== 200) ? reject(err || res.statusMessage) : resolve(data);
+                return resolve(data);
             });;
         });
     }

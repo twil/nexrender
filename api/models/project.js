@@ -86,6 +86,8 @@ class Project {
             // save entity and resolve promise
             this.save().then(() => {
                 resolve(this);
+            }).catch((err) => {
+                reject("Failed to update state");
             });
         });
     }
