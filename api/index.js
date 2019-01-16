@@ -8,17 +8,11 @@ let Project   = require('./models/project');
 
 
 /**
- * Get json or reject promise
+ * Get json
  */
-function _decode_response(data, response, reject) {
-    try {
-        if (typeof data === 'string') {
-            data = JSON.parse(data);
-        }
-    }
-    catch(e) {
-        reject('Failed to decode response. Status: ' + response.statusCode + '\nResponse: ' + data);
-        return false;
+function _decode_response(data) {
+    if (typeof data === 'string') {
+        data = JSON.parse(data);
     }
 
     return data;
@@ -76,19 +70,19 @@ let wrapper = {
                     return reject('Failed to create project: ' + (err || res.statusMessage));
                 }
 
-                // parse json
-                data = _decode_response(data, res, reject);
+                try {
+                    data = _decode_response(data);
+                }
+                catch(e) {
+                    return reject("Failed to create project: " + e);
+                }
 
                 // verify
                 if (data && data.template) {
                     return resolve( new Project(data, wrapper) );
                 }
 
-                if(data === false) {
-                    // already rejected!!!
-                    // TODO: strange call
-                }
-
+                reject('Failed to create project: ???');
             });
         });
     },
@@ -111,14 +105,13 @@ let wrapper = {
                         return reject("Failed to get project ID " + id + ". " + (err || res.statusMessage));
                     }
 
-                    // parse json
-                    data = _decode_response(data, res, reject);
-                    if(data === false) {
-                        // TODO: already rejected
-                        return;
+                    try {
+                        data = _decode_response(data);
+                    }
+                    catch(e) {
+                        return reject("Failed to get project ID " + id + ": " + e);
                     }
 
-                    // verify
                     return resolve( new Project(data, wrapper) );
                 });
             } else {
@@ -127,16 +120,15 @@ let wrapper = {
                 router.getAll((err, res, data) => {
                     if (!res || res.statusCode !== 200) return reject( new Error('Error occured during getting list of projects') );
 
-                    // read json
-                    let results = [];
-                    data = _decode_response(data, res, reject);
-
-                    if(data === false) {
-                        //TODO: already rejected
-                        return;
+                    try {
+                        data = _decode_response(data);
+                    }
+                    catch(e) {
+                        return reject("Failed to get projects list: " + e);
                     }
 
                     // iterate and create objects
+                    let results = [];
                     for (let obj of data) {
                         results.push( new Project( obj, wrapper ) );
                     }
@@ -164,11 +156,15 @@ let wrapper = {
 
             router.update(object.uid, uobj, (err, res, data) => {
                 if(err || res.statusCode !== 200) {
-                    return reject("Failed to update project ID " + object.uid);
+                    return reject("Failed to update project ID " + object.uid + ". " + err);
                 }
 
-                // parse json
-                data = _decode_response(data, res, reject);
+                try {
+                    data = _decode_response(data);
+                }
+                catch(e) {
+                    return reject("Failed to update project ID " + object.uid + ": " + e);
+                }
 
                 // verify
                 if (data && data.template) {
@@ -180,8 +176,7 @@ let wrapper = {
                 }
 
                 // notify about error
-                // TODO: already rejected
-                //reject( err || res.statusMessage );
+                reject("Failed to update project ID " + object.uid + ": ???");
             });
         });
     },
@@ -200,15 +195,13 @@ let wrapper = {
                     return reject("Failed to remove project ID " + id + ". " + (err || res.statusMessage))
                 }
 
-                // parse json
-                data = _decode_response(data, res, reject);
-
-                if(data === false) {
-                    //TODO: already rejected
-                    return;
+                try {
+                    data = _decode_response(data);
+                }
+                catch(e) {
+                    return reject("Failed to remove project ID " + id + ": " + e);
                 }
 
-                // verify || notify about error
                 return resolve(data);
             });;
         });
