@@ -156,7 +156,7 @@ let wrapper = {
 
             router.update(object.uid, uobj, (err, res, data) => {
                 if(err || res.statusCode !== 200) {
-                    return reject("Failed to update project ID " + object.uid + ". " + err);
+                    return reject("Failed to update project ID " + object.uid + ". Err: " + err + ". Status: " + res.statusCode);
                 }
 
                 try {

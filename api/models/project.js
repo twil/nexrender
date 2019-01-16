@@ -1,6 +1,7 @@
 'use strict';
 
 const shortid = require('shortid');
+let logger    = require('../..renderer/logger');
 
 const DEFAULT_STATE         = 'queued';
 const DEFAULT_TEMPLATE      = 'template.aep';
@@ -166,7 +167,10 @@ class Project {
                 this.deserialize( project );
                 this.callMethod( project.state );
             }
-        })
+        }).catch((err) => {
+            // TODO: failed to get project from server or other error.
+            logger.warn(`Failed to sync project ${this.uid} with server: ${err}`);
+        });
     }
 
     /**

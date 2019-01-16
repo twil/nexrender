@@ -10,6 +10,11 @@ const async     = require('async');
  * Clean up all workpath files and remove folder
  */
 module.exports = function(project, updateCurrentAction) {
+
+    if(typeof updateCurrentAction == 'undefined') {
+        updateCurrentAction = true;
+    }
+
     return new Promise((resolve, reject) => {
 
         logger.info(`[${project.uid}] cleaning up...`);
