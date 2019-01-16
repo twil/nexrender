@@ -73,10 +73,11 @@ module.exports = function(project) {
                         logger.error(`[${project.uid}] ${message}`);
                         errors += message;
                     }
-                    else {
+
+                    if(!errors) {
                         logger.info(`[${project.uid}] uploaded.`);
                     }
-                    
+
                     return errors ? reject(errors) : resolve(project);
                 });
             })
