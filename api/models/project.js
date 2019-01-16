@@ -87,7 +87,7 @@ class Project {
             this.save().then(() => {
                 resolve(this);
             }).catch((err) => {
-                reject("Failed to update state");
+                reject("Failed to update state: " + err);
             });
         });
     }
