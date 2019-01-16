@@ -86,7 +86,7 @@ function applyTasks(project, resolve, reject) {
             // project encountered an error
             project.failure(err).then(() => {
                 reject(err, project);
-            })
+            }).catch(reject) // yeh:/ I'm bad at promises
         });
 };
 
