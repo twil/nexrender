@@ -1,7 +1,7 @@
 'use strict';
 
 const shortid = require('shortid');
-let logger    = require('../..renderer/logger');
+let logger    = require('../../renderer/logger');
 
 const DEFAULT_STATE         = 'queued';
 const DEFAULT_TEMPLATE      = 'template.aep';
