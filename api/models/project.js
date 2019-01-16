@@ -87,7 +87,7 @@ class Project {
             // save entity and resolve promise
             return this.save().then(() => {
                 resolve(this);
-            })
+            }).catch(reject)
         });
     }
 
