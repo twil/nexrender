@@ -163,7 +163,7 @@ let wrapper = {
             if (!wrapper.registered) return reject(new Error('[error] call config method first'));
 
             router.update(object.uid, uobj, (err, res, data) => {
-                if(err || res.statusCode === 200) {
+                if(err || res.statusCode !== 200) {
                     return reject("Failed to update project ID " + object.uid);
                 }
 
